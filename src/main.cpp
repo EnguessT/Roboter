@@ -1,7 +1,10 @@
 #include <iostream>
 #include <chrono>
+#include <filesystem>
 #include "../include/differential_drive.hpp"
 #include "../include/simulator.hpp"
+#include "../include/logger.hpp"
+#include "../include/recorder.hpp"
 
 
 
@@ -9,6 +12,12 @@ int main() {
 
     // Created a simulator object
     Simulator sim;
+
+    // create logger and recorder
+    
+    std::string log_file{"../../../log/record.log"};
+    Recorder rec(sim.bus(), log_file);
+    Logger logger(sim.bus());
 
     // staart the simulation
     sim.bus().subscribe<messages::SimulationStarted>([] (const auto&) {
@@ -21,36 +30,18 @@ int main() {
 
     sim.start(0.1); // 10hz
 
-    sim.bus().subscribe<messages::SimulationTick>([](const messages::SimulationTick& t) {
-        std::cout << "Time: " << t.time << '\n';
-    });
-    
-    sim.bus().subscribe<messages::VelocityCommand>([](const messages::VelocityCommand& v) {
-        std::cout << v.target << " Velocity: " 
-        << "left : " << v.left 
-        <<" right: " << v.right << '\n';
-    });
-        
-    sim.bus().subscribe<messages::Odometry>([](const messages::Odometry& o) {
-            std::cout << o.name << "ODOM: " 
-            << "x = " << o.x 
-            << "y = " << o.y 
-            << "theta = " << o.theta << '\n';
-    });
-
-    for (int i = 0; i < 10 ; i++) {
-        //sim.update(0.1);
-        sim.printAll();
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    }
-    
-
     //publish velocity commands
-    //sim.bus().publish(messages::VelocityCommand{"Rover", 0.5, 0.3});
+    sim.bus().publish(messages::VelocityCommand{"Rover", 0.5, 0.3});
+    std::this_thread::sleep_for(std::chrono::seconds(3));
 
     // stop the simulation
     sim.stop();
     sim.bus().flush();
+
+    auto& hist = sim.bus().getHistory<messages::Odometry>();
+    for(auto& h: hist) {
+        std::cout << "hist Odometry: " << std::any_cast<messages::Odometry>(h) << '\n';
+    }
     
 
     return 0;

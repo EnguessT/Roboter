@@ -1,0 +1,121 @@
+VelocityCommand Rover left=0.5 right=0.3
+VelocityCommand Rover left=0.5 right=0.3
+SimulationTick time=0.1
+SimulationTick time=0.1
+Odometry Rover x = 0.04 y = 0 theta = -0.0666667
+Odometry Rover x = 0.0799111 y = -0.00266469 theta = -0.133333
+SimulationTick time=0.2
+SimulationTick time=0.2
+VelocityCommand Rover left=0.5 right=0.3
+Odometry Rover x = 0.119556 y = -0.00798224 theta = -0.2
+SimulationTick time=0.3
+SimulationTick time=0.3
+VelocityCommand Rover left=0.5 right=0.3
+VelocityCommand Rover left=0.5 right=0.3
+Odometry Rover x = 0.158759 y = -0.015929 theta = -0.266667
+SimulationTick time=0.4
+SimulationTick time=0.4
+VelocityCommand Rover left=0.5 right=0.3
+Odometry Rover x = 0.197345 y = -0.0264697 theta = -0.333333
+SimulationTick time=0.5
+SimulationTick time=0.5
+SimulationTick time=0.6
+SimulationTick time=0.6
+VelocityCommand Rover left=0.5 right=0.3
+Odometry Rover x = 0.235143 y = -0.0395575 theta = -0.4
+VelocityCommand Rover left=0.5 right=0.3
+Odometry Rover x = 0.271986 y = -0.0551342 theta = -0.466667
+SimulationTick time=0.7
+SimulationTick time=0.7
+Odometry Rover x = 0.307709 y = -0.0731307 theta = -0.533333
+SimulationTick time=0.8
+VelocityCommand Rover left=0.5 right=0.3
+SimulationTick time=0.8
+Odometry Rover x = 0.342153 y = -0.093467 theta = -0.6
+VelocityCommand Rover left=0.5 right=0.3
+SimulationTick time=0.9
+SimulationTick time=0.9
+Odometry Rover x = 0.375167 y = -0.116053 theta = -0.666667
+SimulationTick time=1
+VelocityCommand Rover left=0.5 right=0.3
+SimulationTick time=1
+VelocityCommand Rover left=0.5 right=0.3
+Odometry Rover x = 0.406602 y = -0.140787 theta = -0.733333
+SimulationTick time=1.1
+SimulationTick time=1.1
+VelocityCommand Rover left=0.5 right=0.3
+Odometry Rover x = 0.43632 y = -0.167561 theta = -0.8
+SimulationTick time=1.2
+SimulationTick time=1.2
+Odometry Rover x = 0.464188 y = -0.196256 theta = -0.866667
+VelocityCommand Rover left=0.5 right=0.3
+SimulationTick time=1.3
+SimulationTick time=1.3
+Odometry Rover x = 0.490083 y = -0.226743 theta = -0.933333
+SimulationTick time=1.4
+VelocityCommand Rover left=0.5 right=0.3
+SimulationTick time=1.4
+Odometry Rover x = 0.51389 y = -0.258887 theta = -1
+SimulationTick time=1.5
+VelocityCommand Rover left=0.5 right=0.3
+SimulationTick time=1.5
+Odometry Rover x = 0.535502 y = -0.292546 theta = -1.06667
+VelocityCommand Rover left=0.5 right=0.3
+SimulationTick time=1.6
+SimulationTick time=1.6
+Odometry Rover x = 0.554823 y = -0.32757 theta = -1.13333
+VelocityCommand Rover left=0.5 right=0.3
+SimulationTick time=1.7
+SimulationTick time=1.7
+VelocityCommand Rover left=0.5 right=0.3
+SimulationTick time=1.8
+Odometry Rover x = 0.571769 y = -0.363803 theta = -1.2
+SimulationTick time=1.8
+Odometry Rover x = 0.586263 y = -0.401084 theta = -1.26667
+VelocityCommand Rover left=0.5 right=0.3
+SimulationTick time=1.9
+SimulationTick time=1.9
+Odometry Rover x = 0.598242 y = -0.439249 theta = -1.33333
+SimulationTick time=2
+SimulationTick time=2
+VelocityCommand Rover left=0.5 right=0.3
+Odometry Rover x = 0.607651 y = -0.478126 theta = -1.4
+SimulationTick time=2.1
+VelocityCommand Rover left=0.5 right=0.3
+SimulationTick time=2.1
+VelocityCommand Rover left=0.5 right=0.3
+SimulationTick time=2.2
+SimulationTick time=2.2
+Odometry Rover x = 0.61445 y = -0.517544 theta = -1.46667
+VelocityCommand Rover left=0.5 right=0.3
+Odometry Rover x = 0.618608 y = -0.557328 theta = -1.53333
+SimulationTick time=2.3
+SimulationTick time=2.3
+VelocityCommand Rover left=0.5 right=0.3
+Odometry Rover x = 0.620106 y = -0.5973 theta = -1.6
+SimulationTick time=2.4
+SimulationTick time=2.4
+VelocityCommand Rover left=0.5 right=0.3
+Odometry Rover x = 0.618938 y = -0.637282 theta = -1.66667
+SimulationTick time=2.5
+SimulationTick time=2.5
+VelocityCommand Rover left=0.5 right=0.3
+Odometry Rover x = 0.615109 y = -0.677099 theta = -1.73333
+SimulationTick time=2.6
+SimulationTick time=2.6
+VelocityCommand Rover left=0.5 right=0.3
+Odometry Rover x = 0.608636 y = -0.716572 theta = -1.8
+SimulationTick time=2.7
+SimulationTick time=2.7
+VelocityCommand Rover left=0.5 right=0.3
+Odometry Rover x = 0.599548 y = -0.755525 theta = -1.86667
+SimulationTick time=2.8
+SimulationTick time=2.8
+VelocityCommand Rover left=0.5 right=0.3
+Odometry Rover x = 0.587885 y = -0.793787 theta = -1.93333
+SimulationTick time=2.9
+SimulationTick time=2.9
+SimulationTick time=3
+VelocityCommand Rover left=0.5 right=0.3
+Odometry Rover x = 0.573699 y = -0.831187 theta = -2
+SimulationTick time=3
