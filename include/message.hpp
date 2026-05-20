@@ -36,7 +36,7 @@ namespace messages {
         double right;
 
         VelocityCommand()= default;
-
+        
         VelocityCommand(std::string t, double l, double r) 
         : header{},target(std::move(t)), left(l), right(r) 
         {}
@@ -50,7 +50,6 @@ namespace messages {
         double theta{};
 
         Odometry()= default;
-        
         Odometry(std::string t, double x_t, double y_t, double th_t) 
         : header{}, name(std::move(t)), x(x_t), y(y_t), theta(th_t) 
         {}
