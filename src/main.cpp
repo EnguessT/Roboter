@@ -5,44 +5,40 @@
 #include "../include/simulator.hpp"
 #include "../include/logger.hpp"
 #include "../include/recorder.hpp"
-
+#include "../include/ui_window.hpp"
 
 
 int main() {
 
-    // Created a simulator object
-    Simulator sim;
+    // SFML 3 window creation syntax
+    sf::RenderWindow window{sf::VideoMode({1080, 720}), "TGUI + SFML 3"};
+    // TGUI GUI object
+    tgui::Gui gui{window};
 
-    // create logger and recorder
-    
-    std::string log_file{"../../../log/record.log"};
-    Recorder rec(sim.bus(), log_file);
-    Logger logger(sim.bus());
+    WindowUI window_ui(&window, &gui);
 
-    // staart the simulation
-    sim.bus().subscribe<messages::SimulationStarted>([] (const auto&) {
-        std::cout << "Simulation started\n";
-    });
+     while (window.isOpen()) {
+        while (const std::optional event = window.pollEvent()) {
 
-    // Create a robot
-    std::string name {"Rover"};
-    sim.addRobot(std::make_unique<DifferentialDriveRobot>(name, 0.3, sim.bus()));
+            gui.handleEvent(*event);
 
-    sim.start(0.1); // 10hz
+            if (event->is<sf::Event::Closed>())
+            {
+                window.close();
+            }
+            else if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>())
+            {
+                if (keyPressed->scancode == sf::Keyboard::Scancode::Escape)
+                    window.close();
+            }
+        }
 
-    //publish velocity commands
-    sim.bus().publish(messages::VelocityCommand{"Rover", 0.5, 0.3});
-    std::this_thread::sleep_for(std::chrono::seconds(3));
+        window_ui.draw();
 
-    // stop the simulation
-    sim.stop();
-    sim.bus().flush();
-
-    auto& hist = sim.bus().getHistory<messages::Odometry>();
-    for(auto& h: hist) {
-        std::cout << "hist Odometry: " << std::any_cast<messages::Odometry>(h) << '\n';
+        window.clear();
+        gui.draw();
+        window.display();
     }
-    
 
     return 0;
 }
