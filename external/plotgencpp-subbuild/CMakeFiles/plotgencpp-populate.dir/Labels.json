@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/home/thierry/Desktop/Github_projects/Roboter/external/plotgencpp-subbuild/CMakeFiles/plotgencpp-populate"
+		},
+		{
+			"file" : "/home/thierry/Desktop/Github_projects/Roboter/external/plotgencpp-subbuild/CMakeFiles/plotgencpp-populate.rule"
+		},
+		{
+			"file" : "/home/thierry/Desktop/Github_projects/Roboter/external/plotgencpp-subbuild/CMakeFiles/plotgencpp-populate-complete.rule"
+		},
+		{
+			"file" : "/home/thierry/Desktop/Github_projects/Roboter/external/plotgencpp-subbuild/plotgencpp-populate-prefix/src/plotgencpp-populate-stamp/plotgencpp-populate-build.rule"
+		},
+		{
+			"file" : "/home/thierry/Desktop/Github_projects/Roboter/external/plotgencpp-subbuild/plotgencpp-populate-prefix/src/plotgencpp-populate-stamp/plotgencpp-populate-configure.rule"
+		},
+		{
+			"file" : "/home/thierry/Desktop/Github_projects/Roboter/external/plotgencpp-subbuild/plotgencpp-populate-prefix/src/plotgencpp-populate-stamp/plotgencpp-populate-download.rule"
+		},
+		{
+			"file" : "/home/thierry/Desktop/Github_projects/Roboter/external/plotgencpp-subbuild/plotgencpp-populate-prefix/src/plotgencpp-populate-stamp/plotgencpp-populate-install.rule"
+		},
+		{
+			"file" : "/home/thierry/Desktop/Github_projects/Roboter/external/plotgencpp-subbuild/plotgencpp-populate-prefix/src/plotgencpp-populate-stamp/plotgencpp-populate-mkdir.rule"
+		},
+		{
+			"file" : "/home/thierry/Desktop/Github_projects/Roboter/external/plotgencpp-subbuild/plotgencpp-populate-prefix/src/plotgencpp-populate-stamp/plotgencpp-populate-patch.rule"
+		},
+		{
+			"file" : "/home/thierry/Desktop/Github_projects/Roboter/external/plotgencpp-subbuild/plotgencpp-populate-prefix/src/plotgencpp-populate-stamp/plotgencpp-populate-test.rule"
+		},
+		{
+			"file" : "/home/thierry/Desktop/Github_projects/Roboter/external/plotgencpp-subbuild/plotgencpp-populate-prefix/src/plotgencpp-populate-stamp/plotgencpp-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"plotgencpp-populate"
+		],
+		"name" : "plotgencpp-populate"
+	}
+}
