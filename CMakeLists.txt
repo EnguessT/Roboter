@@ -55,6 +55,17 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(TGUI)
 
+#-------- PlotGenCPP -----------------------------  
+FetchContent_Declare(
+  PlotGenCpp
+  GIT_REPOSITORY https://github.com/skhelladi/PlotGenCpp.git
+  GIT_TAG main
+)
+FetchContent_GetProperties(PlotGenCpp)
+if(NOT PlotGenCpp_POPULATED)
+    FetchContent_Populate(PlotGenCpp)
+endif()
+
 # sources files
 file(GLOB_RECURSE SOURCES
     ${CMAKE_SOURCE_DIR}/src/*.cpp
@@ -68,6 +79,8 @@ target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
 target_include_directories(${PROJECT_NAME}
     PUBLIC
         ${CMAKE_SOURCE_DIR}/include
+    PRIVATE
+        ${PlotGenCpp_SOURCE_DIR}/include
 )
 
 #link libraries
