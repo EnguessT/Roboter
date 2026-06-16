@@ -1,5 +1,9 @@
 #include <iostream>
+
 #include "../include/ui_window.hpp"
+#include "../include/rounded_rectangle.hpp"
+#include "../include/two_wheel_robot.hpp"
+#include "../include/four_wheel_robot.hpp"
 
 
 WindowUI::WindowUI(sf::RenderWindow* window, tgui::Gui* gui)
@@ -214,7 +218,19 @@ void WindowUI::createSideBar(tgui::Gui *gui) {
 void WindowUI::draw() {
     m_canvas->clear(sf::Color(60, 60, 60));
     sf::Text text(m_font, "Hello SFML", 50);
+    RoundedRectangleShape body({120.f, 70.f}, 15.f, 12);
+    body.setFillColor(sf::Color::Blue);
+    body.setPosition({300.f, 100.f});
+    //body.setRotation(sf::Angle .f);
+
+    TwoWheelRobot robot({80.f, 200.f}, sf::Color(35, 186, 153));
+    FourWheelRobot fourRobot({200.f, 300.f}, sf::Color(35, 186, 153));
+    
+
     m_canvas->draw(text);
+    m_canvas->draw(body);
+    m_canvas->draw(robot);
+    m_canvas->draw(fourRobot);
     m_canvas->display();
 
 }
