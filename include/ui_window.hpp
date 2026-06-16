@@ -1,3 +1,5 @@
+#pragma once
+
 #include <filesystem>
 #include <SFML/Graphics.hpp>
 #include <TGUI/TGUI.hpp>
@@ -28,3 +30,5 @@ private:
     sf::Font m_font;
     tgui::CanvasSFML::Ptr m_canvas;
 };
+
+
