@@ -1,5 +1,4 @@
-#ifndef ROUNDED_RECTANGLE_HPP
-#define ROUNDED_RECTANGLE_HPP
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include <cmath>
@@ -11,13 +10,11 @@ public:
     void setSize(const sf::Vector2f& size);
     void setCornersRadius(float radius);
     virtual std::size_t getPointCount() const;
-    virtual sf::Vector2f getPoint(std::size_t index) const;
+    virtual sf::Vector2f getPoint(std::size_t index) const override;
 
-private:
+protected:
     sf::Vector2f m_size;
     float m_radius;
     unsigned int m_cornerPointCount;
 };
 
-
-#endif
