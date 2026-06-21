@@ -6,6 +6,7 @@
 #include <TGUI/Backend/SFML-Graphics.hpp>
 #include <TGUI/Widget.hpp>
 #include <TGUI/Color.hpp>
+#include "simulator.hpp"
 
 
 class WindowUI {
@@ -15,7 +16,9 @@ public:
     void draw();
     void addCarcallback(tgui::Gui& gui, tgui::Theme& theme);
     tgui::EditBox::Ptr createEditBox(tgui::Theme& theme,float width, float height, 
-            float xPos, float yPos, const tgui::String defaultText);
+            float xPos, float yPos, const tgui::String defaultText, float max);
+    tgui::Label::Ptr createLabel(tgui::Theme& theme, const tgui::String text, 
+                        float xPos, float yPos);
     void createMenuBar(tgui::Gui* gui);
     void createToolBar(tgui::Gui *gui);
     void createCanvas(tgui::Gui *gui);

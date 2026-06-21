@@ -2,6 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 #include <memory>
+#include <string>
+#include "message_bus.hpp"
 #include "rounded_rectangle.hpp"
 
 

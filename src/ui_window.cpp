@@ -43,7 +43,7 @@ void WindowUI::createMenuBar(tgui::Gui *gui) {
     menu->addMenuItem("Exit");
 
     menu->addMenu("Create");
-    menu->addMenuItem("Robot");
+    //menu->addMenuItem("Robot");
     menu->addMenuItem("Map");
     menu->addMenuItem("World");
 
@@ -224,8 +224,9 @@ void WindowUI::draw() {
     //body.setRotation(sf::Angle .f);
 
     TwoWheelRobot robot({80.f, 200.f}, sf::Color(35, 186, 153));
+    robot.move({0.1f, 0.f});
     FourWheelRobot fourRobot({200.f, 300.f}, sf::Color(35, 186, 153));
-    
+    fourRobot.move({0.1f, 0.f});
 
     m_canvas->draw(text);
     m_canvas->draw(body);
@@ -236,13 +237,14 @@ void WindowUI::draw() {
 }
 
  tgui::EditBox::Ptr WindowUI::createEditBox(tgui::Theme& theme,float width, float height, 
-            float xPos, float yPos, const tgui::String defaultText) {
+            float xPos, float yPos, const tgui::String defaultText, float max) {
 
     auto editBox = tgui::EditBox::create();
     editBox->setRenderer(theme.getRenderer("EditBox"));
     editBox->setInputValidator(tgui::EditBox::Validator::Float);
-    float minValue = 00.0f;
-    float maxValue = 200.0f;
+    float minValue = 0.0f;
+    float maxValue = max;
+
     editBox->setSize(width, height);
     editBox->setPosition(xPos, yPos);
     editBox->setDefaultText(defaultText);
@@ -263,6 +265,16 @@ void WindowUI::draw() {
 
 }
 
+tgui::Label::Ptr WindowUI::createLabel(tgui::Theme& theme, const tgui::String text, 
+                        float xPos, float yPos) {
+    auto label = tgui::Label::create();
+    label->setRenderer(theme.getRenderer("Label"));
+    label->setText(text);
+    label->setPosition(xPos, yPos);
+    label->setTextSize(18);
+    return label;
+}
+
 void WindowUI::addCarcallback(tgui::Gui& gui, tgui::Theme& theme) {
     auto robotWindow = tgui::ChildWindow::create();
     robotWindow->setRenderer(theme.getRenderer("ChildWindow"));
@@ -270,61 +282,71 @@ void WindowUI::addCarcallback(tgui::Gui& gui, tgui::Theme& theme) {
     robotWindow->setPosition(420, 280);
     robotWindow->setTitle("Add Robot");
 
-    auto xPos = tgui::Label::create();
-    xPos->setRenderer(theme.getRenderer("Label"));
-    xPos->setText("X ");
-    xPos->setPosition(140, 33);
-    xPos->setTextSize(18);
+    auto robotName = createLabel(theme, "Name", 90, 15);
+    robotWindow->add(robotName);
+
+    auto nameBox = tgui::EditBox::create();
+    nameBox->setRenderer(theme.getRenderer("EditBox"));
+    nameBox->setSize(160, 40);
+    nameBox->setPosition(180, 7);
+    nameBox->setDefaultText("Robot name");
+    robotWindow->add(nameBox);
+
+    auto robotModel = createLabel(theme, "Model", 90, 58);
+    robotWindow->add(robotModel);
+
+    auto comboBox = tgui::ComboBox::create();
+    comboBox->setRenderer(theme.getRenderer("ComboBox"));
+    comboBox->setSize(160, 30);
+    comboBox->setPosition(180, 53);
+    comboBox->addItem("Two wheels");
+    comboBox->addItem("Four Wheels");
+    comboBox->setSelectedItem("Two Wheels");
+    robotWindow->add(comboBox);
+
+    auto xPos = createLabel(theme, "X", 140, 98);
     robotWindow->add(xPos);
 
-    auto editXPosition = createEditBox(theme, 160, 50, 180, 18, "x position");
+    float maxXValue = m_canvas->getFullSize().x;
+    float maxYValue = m_canvas->getFullSize().y;
+
+    auto editXPosition = createEditBox(theme, 160, 40, 180, 88, "x position", maxXValue);
     robotWindow->add(editXPosition);
 
-    auto yPos = tgui::Label::copy(xPos);
-    yPos->setText("Y ");
-    yPos->setPosition(140, 93);
+    auto yPos = createLabel(theme, "Y", 140, 148);
     robotWindow->add(yPos);
 
-    auto editYPosition = createEditBox(theme, 160, 50, 180, 78, "y position");
+    auto editYPosition = createEditBox(theme, 160, 40, 180, 138, "y position", maxYValue);
     robotWindow->add(editYPosition);
 
-    auto color = tgui::Label::copy(xPos);
-    color->setText("Color ");
-    color->setPosition(30, 138);
+    auto color = createLabel(theme, "Color", 90, 188);
     robotWindow->add(color);
 
-    auto rLabel = tgui::Label::copy(color);
-    rLabel->setText("R");
-    rLabel->setPosition(70, 160);
+    auto rLabel = createLabel(theme, "R", 70, 217);
     robotWindow->add(rLabel);
 
-    auto gLabel = tgui::Label::copy(rLabel);
-    gLabel->setText("G");
-    gLabel->setPosition(70, 200);
+    auto gLabel = createLabel(theme, "G", 70, 247);
     robotWindow->add(gLabel);
 
-    auto bLabel = tgui::Label::copy(rLabel);
-    bLabel->setText("B");
-    bLabel->setPosition(70, 240);
+    auto bLabel =  createLabel(theme, "B", 70, 277);
     robotWindow->add(bLabel);
 
     auto rSlider = tgui::Slider::create(0, 255);
     rSlider->setRenderer(theme.getRenderer("Slider"));
     rSlider->setSize(130, 18);
-    rSlider->setPosition(130, 160);
-
+    rSlider->setPosition(130, 220);
     auto gSlider = tgui::Slider::copy(rSlider);
-    gSlider->setPosition(130, 200);
+    gSlider->setPosition(130, 250);
 
     auto bSlider = tgui::Slider::copy(rSlider);
-    bSlider->setPosition(130, 240);
+    bSlider->setPosition(130, 280);
 
     robotWindow->add(rSlider, "R");
     robotWindow->add(gSlider, "G");
     robotWindow->add(bSlider, "B");
 
     auto colorPreview = tgui::Panel::create({60, 60});
-    colorPreview->setPosition(300, 180);
+    colorPreview->setPosition(300, 229);
     colorPreview->getRenderer()->setBackgroundColor(tgui::Color::White);
 
     robotWindow->add(colorPreview, "Preview");
@@ -344,7 +366,7 @@ void WindowUI::addCarcallback(tgui::Gui& gui, tgui::Theme& theme) {
 
     auto okButton = tgui::Button::create("OK");
     okButton->setRenderer(theme.getRenderer("Button"));
-    okButton->setPosition(300, 260);
+    okButton->setPosition(305, 299);
     okButton->setSize(40, 30);
     okButton->onPress([=] {
         tgui::Color selected(
@@ -353,10 +375,7 @@ void WindowUI::addCarcallback(tgui::Gui& gui, tgui::Theme& theme) {
             bSlider->getValue()
         );
 
-        std::cout << "Selected color: " 
-                << (int)selected.getRed() << ", "
-                << (int)selected.getGreen() << ", "
-                << (int)selected.getBlue() << "\n";
+        
 
         //robotWindow->close();
     });
