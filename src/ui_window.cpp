@@ -116,12 +116,12 @@ void WindowUI::createToolBar(tgui::Gui *gui) {
     hbox->getRenderer()->setPadding(2);
     toolbar->add(hbox);
 
-
     // buttons
     auto robotBtn  = createIconButton("Assets/images/robot.png", "Add robot");
-    robotBtn->onPress([](){
-        std::cerr << "Button new was pressed\n";
+    robotBtn->onPress([this] {
+        addCarcallback(*m_gui, m_theme);
     });
+  
     auto mazeBtn = createIconButton("Assets/images/maze.png", "Add world");
     mazeBtn->onPress([](){
         std::cerr << "Button open was pressed\n";
@@ -233,4 +233,141 @@ void WindowUI::draw() {
     m_canvas->draw(fourRobot);
     m_canvas->display();
 
+}
+
+ tgui::EditBox::Ptr WindowUI::createEditBox(tgui::Theme& theme,float width, float height, 
+            float xPos, float yPos, const tgui::String defaultText) {
+
+    auto editBox = tgui::EditBox::create();
+    editBox->setRenderer(theme.getRenderer("EditBox"));
+    editBox->setInputValidator(tgui::EditBox::Validator::Float);
+    float minValue = 00.0f;
+    float maxValue = 200.0f;
+    editBox->setSize(width, height);
+    editBox->setPosition(xPos, yPos);
+    editBox->setDefaultText(defaultText);
+    editBox->onTextChange([=](const tgui::String& text) {
+        if (text.empty())
+            return;
+
+        float value = text.toFloat();
+
+        if (value < minValue)
+            editBox->setText(std::format("{:.2f}",minValue));
+
+        if (value > maxValue)
+            editBox->setText(std::format("{:.2f}",maxValue));
+    });
+
+    return editBox;       
+
+}
+
+void WindowUI::addCarcallback(tgui::Gui& gui, tgui::Theme& theme) {
+    auto robotWindow = tgui::ChildWindow::create();
+    robotWindow->setRenderer(theme.getRenderer("ChildWindow"));
+    robotWindow->setClientSize({400, 400});
+    robotWindow->setPosition(420, 280);
+    robotWindow->setTitle("Add Robot");
+
+    auto xPos = tgui::Label::create();
+    xPos->setRenderer(theme.getRenderer("Label"));
+    xPos->setText("X ");
+    xPos->setPosition(140, 33);
+    xPos->setTextSize(18);
+    robotWindow->add(xPos);
+
+    auto editXPosition = createEditBox(theme, 160, 50, 180, 18, "x position");
+    robotWindow->add(editXPosition);
+
+    auto yPos = tgui::Label::copy(xPos);
+    yPos->setText("Y ");
+    yPos->setPosition(140, 93);
+    robotWindow->add(yPos);
+
+    auto editYPosition = createEditBox(theme, 160, 50, 180, 78, "y position");
+    robotWindow->add(editYPosition);
+
+    auto color = tgui::Label::copy(xPos);
+    color->setText("Color ");
+    color->setPosition(30, 138);
+    robotWindow->add(color);
+
+    auto rLabel = tgui::Label::copy(color);
+    rLabel->setText("R");
+    rLabel->setPosition(70, 160);
+    robotWindow->add(rLabel);
+
+    auto gLabel = tgui::Label::copy(rLabel);
+    gLabel->setText("G");
+    gLabel->setPosition(70, 200);
+    robotWindow->add(gLabel);
+
+    auto bLabel = tgui::Label::copy(rLabel);
+    bLabel->setText("B");
+    bLabel->setPosition(70, 240);
+    robotWindow->add(bLabel);
+
+    auto rSlider = tgui::Slider::create(0, 255);
+    rSlider->setRenderer(theme.getRenderer("Slider"));
+    rSlider->setSize(130, 18);
+    rSlider->setPosition(130, 160);
+
+    auto gSlider = tgui::Slider::copy(rSlider);
+    gSlider->setPosition(130, 200);
+
+    auto bSlider = tgui::Slider::copy(rSlider);
+    bSlider->setPosition(130, 240);
+
+    robotWindow->add(rSlider, "R");
+    robotWindow->add(gSlider, "G");
+    robotWindow->add(bSlider, "B");
+
+    auto colorPreview = tgui::Panel::create({60, 60});
+    colorPreview->setPosition(300, 180);
+    colorPreview->getRenderer()->setBackgroundColor(tgui::Color::White);
+
+    robotWindow->add(colorPreview, "Preview");
+
+    auto updatePreview = [=]() {
+        tgui::Color c(
+            static_cast<unsigned char>(rSlider->getValue()),
+            static_cast<unsigned char>(gSlider->getValue()),
+            static_cast<unsigned char>(bSlider->getValue())
+        );
+        colorPreview->getRenderer()->setBackgroundColor(c);
+    };
+
+    rSlider->onValueChange(updatePreview);
+    gSlider->onValueChange(updatePreview);
+    bSlider->onValueChange(updatePreview);
+
+    auto okButton = tgui::Button::create("OK");
+    okButton->setRenderer(theme.getRenderer("Button"));
+    okButton->setPosition(300, 260);
+    okButton->setSize(40, 30);
+    okButton->onPress([=] {
+        tgui::Color selected(
+            rSlider->getValue(),
+            gSlider->getValue(),
+            bSlider->getValue()
+        );
+
+        std::cout << "Selected color: " 
+                << (int)selected.getRed() << ", "
+                << (int)selected.getGreen() << ", "
+                << (int)selected.getBlue() << "\n";
+
+        //robotWindow->close();
+    });
+    robotWindow->add(okButton);
+
+    // Create the login button
+    auto addButton = tgui::Button::create("Add");
+    addButton->setRenderer(theme.getRenderer("Button"));
+    addButton->setSize({"30%", "10%"});
+    addButton->setPosition({"35%", "85%"});
+    robotWindow->add(addButton);
+
+    gui.add(robotWindow);
 }

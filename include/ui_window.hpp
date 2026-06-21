@@ -13,6 +13,9 @@ public:
     WindowUI(sf::RenderWindow* window, tgui::Gui* gui);
     void update();
     void draw();
+    void addCarcallback(tgui::Gui& gui, tgui::Theme& theme);
+    tgui::EditBox::Ptr createEditBox(tgui::Theme& theme,float width, float height, 
+            float xPos, float yPos, const tgui::String defaultText);
     void createMenuBar(tgui::Gui* gui);
     void createToolBar(tgui::Gui *gui);
     void createCanvas(tgui::Gui *gui);
@@ -21,6 +24,7 @@ public:
                     const tgui::String& tipText);
     tgui::Button::Ptr createIconButton(const tgui::String& iconPath, 
                     const tgui::String& tipText);
+    
 
 private:
     sf::RenderWindow* m_window;
