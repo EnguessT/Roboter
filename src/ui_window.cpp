@@ -223,15 +223,15 @@ void WindowUI::draw() {
     body.setPosition({300.f, 100.f});
     //body.setRotation(sf::Angle .f);
 
-    TwoWheelRobot robot({80.f, 200.f}, sf::Color(35, 186, 153));
-    robot.move({0.1f, 0.f});
-    FourWheelRobot fourRobot({200.f, 300.f}, sf::Color(35, 186, 153));
-    fourRobot.move({0.1f, 0.f});
+    //TwoWheelRobot robot({80.f, 200.f}, sf::Color(35, 186, 153));
+    //robot.move({0.1f, 0.f});
+    //FourWheelRobot fourRobot({200.f, 300.f}, sf::Color(35, 186, 153));
+    //fourRobot.move({0.1f, 0.f});
 
     m_canvas->draw(text);
     m_canvas->draw(body);
-    m_canvas->draw(robot);
-    m_canvas->draw(fourRobot);
+    //m_canvas->draw(robot);
+    //m_canvas->draw(fourRobot);
     m_canvas->display();
 
 }
