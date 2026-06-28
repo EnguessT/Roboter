@@ -11,7 +11,7 @@
 int main() {
 
     // SFML 3 window creation syntax
-    sf::RenderWindow window{sf::VideoMode({1080, 720}), "TGUI + SFML 3"};
+    sf::RenderWindow window{sf::VideoMode({1080, 720}), "Roboter"};
     window.setFramerateLimit(60);
     // TGUI GUI object
     tgui::Gui gui{window};
