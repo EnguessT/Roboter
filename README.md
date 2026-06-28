@@ -2,6 +2,8 @@
 
 A lightweight, modular **2D robot simulator** built with **C++, SFML**, and **TGUI**.The simulator models a **differential‑drive robot** using real kinematic equations and provides a GUI for manual and trajectory‑based control.
 
+ ![MainWindow](https://github.com/EnguessT/Roboter/blob/main/Assets/images/window_gui.png)
+
 ## ✨ Key Features
 - Differential‑drive kinematic model  
 Uses standard robot motion equations to update pose $[x, y, \theta]$ in discrete time.
