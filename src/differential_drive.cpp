@@ -4,10 +4,14 @@
 #include "../include/differential_drive.hpp"
 
                         
-DifferentialDriveRobot:: DifferentialDriveRobot(std::string name, double wheelBase, 
-                MessageBus& bus)
-    : Robot(std::move(name), bus)
-    , m_wheelBase(wheelBase) {
+DifferentialDriveRobot:: DifferentialDriveRobot(std::string name,  
+    sf::Vector2f initPos, MessageBus& bus)
+    : Robot(std::move(name), bus) 
+    , m_initPosition(initPos) {
+
+    m_x = m_initPosition.x;
+    m_y = m_initPosition.y;
+    m_theta = 0.f;
 
     m_bus.subscribe<messages::VelocityCommand>(
         [this](const messages::VelocityCommand& cmd) {
@@ -23,8 +27,8 @@ void DifferentialDriveRobot::update(double dt, double simTime) {
     double vel = (m_leftVel + m_rightVel) * 0.5;
     double angVel = (m_rightVel - m_leftVel) / m_wheelBase;
     
-    m_x     += vel * std::cos(m_theta) * dt;
-    m_y     += vel * std::sin(m_theta) * dt; 
+    m_x     += vel * std::cos(m_theta) * dt ;
+    m_y     += vel * std::sin(m_theta) * dt ; 
     m_theta += angVel * dt;
 
     //odometry message
@@ -37,6 +41,7 @@ void DifferentialDriveRobot::update(double dt, double simTime) {
     odom.theta = m_theta;
     m_bus.publish(odom);
 
+    //velocity message
     messages::VelocityCommand velocity;
     velocity.header.stamp_sim = simTime;
     velocity.header.seq = m_odomSeq++;
