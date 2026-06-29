@@ -1,3 +1,14 @@
+/**
+ * @file two_wheel_robot.cpp
+ * @brief Definition of class TwoWheelRobot.
+ *
+ * Description: Defines the methods of class TwoWheelRobot.
+ * 
+ * -------
+ * @author EnguessT
+ * @date June 29, 2026
+ */
+
 #include "../include/two_wheel_robot.hpp"
 
 
@@ -11,7 +22,7 @@ TwoWheelRobot::TwoWheelRobot(std::string name, sf::Vector2f positions,
     m_wheelBase = 105.f;
 
     // Place the entire combined object in the world
-    setPosition(m_positions);
+    setPosition(m_initPosition);
 
     // wheels Textures
     std::filesystem::path dir_path = std::filesystem::current_path();
