@@ -1,3 +1,14 @@
+/**
+ * @file four_wheel_robot.cpp
+ * @brief Definition of class FourWheelRobot.
+ *
+ * Description: Defines the methods of class FourWheelRobot.
+ * 
+ * -------
+ * @author EnguessT
+ * @date June 29, 2026
+ */
+
 #include "../include/four_wheel_robot.hpp"
 
 
@@ -11,7 +22,7 @@ FourWheelRobot::FourWheelRobot(std::string name, sf::Vector2f positions,
     m_wheelBase = 85.f;
 
     // Place the entire combined object in the world
-    setPosition(m_positions);
+    setPosition(m_initPosition);
 
     // ---  Main body  ---
     auto body = createRoundedComponent({m_length, m_width}, 15.f, {m_length, m_width},m_color);
