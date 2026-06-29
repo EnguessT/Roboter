@@ -1,3 +1,13 @@
+/**
+ * @file subscriber.hpp
+ * @brief Declaration of class Subscriber 
+ * used for subscription.
+ *
+ * -------
+ * @author EnguessT
+ * @date June 29, 2026
+ */
+
 #pragma once
 
 #include <functional>
@@ -15,5 +25,5 @@ struct Subscriber {
     std::condition_variable cv;
     std::queue<std::any> queue;
     bool running = true;
-    std::function<void(const void*)> callback;
+    std::function<void(const void*)> callback; // callback function
 };
