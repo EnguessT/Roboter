@@ -1,3 +1,13 @@
+/**
+ * @file message_bus.hpp
+ * @brief Declaration variables and methods of class MessageBus 
+ *
+ * Description: Proceed with creation of subscription and publishing operations.
+ * -------
+ * @author EnguessT
+ * @date June 29, 2026
+ */
+
 #pragma once
 
 #include <unordered_map>
@@ -8,9 +18,25 @@
 
 class MessageBus {
 public:
+
+    /**
+     * Constructor
+     * @brief create the MessageBus object
+     */
     MessageBus();
+
+    /**
+     * Destructor
+     * @brief destroy the MessageBus object
+     */
     ~MessageBus();  
 
+    /**
+     * @brief block the caller until all the subscriber
+     * have proceeded all messahes and become empty
+     * @param[in] void
+     * @return void
+     */
     void flush();
 
     /*template<typename T>
@@ -24,6 +50,15 @@ public:
         });
     }*/
 
+
+    /**
+     * @brief create a subscription and perform thread safe 
+     * assigment of the list of subscribers
+     * 
+     * @tparam T the type of data taken as parameter by the callback function
+     * @param[in] cb callback function
+     * @return void
+     */
     template<typename T>
     void subscribe(std::function<void(const T&)> cb) {
 
@@ -51,6 +86,13 @@ public:
         m_subscribers[std::type_index(typeid(T))].push_back(sub);
     }
 
+    /**
+     * @brief publish message and store in history
+     * 
+     * @tparam T the type of message
+     * @param[in] message a message object
+     * @return void
+     */
     template<typename T>
     void publish(const T& message) {
         std::lock_guard<std::mutex> lock(m_mtx);
@@ -86,6 +128,12 @@ public:
 
     } */
 
+    /**
+     * @brief get the recorded history
+     * 
+     * @tparam T the type of message
+     * @return vector reference of message or std::any type
+     */
     template<typename T>
     const std::vector<std::any>& getHistory() const {
         static const std::vector<std::any> empty;
@@ -97,6 +145,13 @@ public:
         //return m_history.at(std::type_index(typeid(T)));
     }
 
+
+    /**
+     * @brief print the recorded history
+     * 
+     * @tparam T the type of message
+     * @return void
+     */
     template<typename T>
     void printHistory(const std::vector<std::any>& hist) {
         std::cout << ">>> PRINTING HISTORY NOW\n";
@@ -110,5 +165,11 @@ private:
     std::unordered_map<std::type_index, std::vector<std::shared_ptr<Subscriber>>> m_subscribers;
     std::unordered_map<std::type_index, std::vector<std::any>> m_history;
     std::mutex m_mtx;
+
+    /**
+     * @brief stop all running subscriber
+     * @param[in] void
+     * @return void
+     */
     void stopAllSubscribers();
 };
