@@ -1,11 +1,24 @@
+/**
+ * @file message.hpp
+ * @brief Declaration of differents message types 
+ * use for subscription and publishment.
+ *
+ * Description: Declares the differents message Types.
+ * -------
+ * @author EnguessT
+ * @date June 29, 2026
+ */
 #pragma once
 
 #include <vector>
 #include <cstdint>
 #include <string>
+#include <SFML/Graphics.hpp>
 
 namespace messages {
-
+    /**
+     * @brief header class: use by almost all other messages types
+     */
     struct Header {
         double stamp_sim{};
         std::uint64_t seq{};
@@ -14,21 +27,58 @@ namespace messages {
     struct SimulationStarted {};
     struct SimulationStopped {};
 
-    struct SimulationTick {
+    /**
+     * @brief  initialize the header and time for simulation
+     * @param header: header object
+     * @param time: simulation time
+     */
+        struct SimulationTick {
         Header header;
         double time;
     };
 
+    /**
+     * @brief message to pause the simulation
+     */
     struct Pause  {};
+
+    /**
+     * @brief message to reset the simulation
+     */
     struct Reset  {};
+
+    /**
+     * @brief message to resume the simulation
+     */
     struct Resume {};
+
+     /**
+     * @brief message to step the simulation
+     * aparam dt: steptime
+     */
     struct Step {double dt;};
 
+    /**
+     * @brief  message to spawn a robot
+     * @param type: type of robot(two wheel, four wheel)
+     * @param name: name of robot
+     * @param position: initial posiotion of the robot
+     * @param color: color of the robot
+     */
     struct SpawnRobot {
+        std::string type;
         std::string name;
-        double wheelBase;
+        sf::Vector2f position;
+        sf::Color color;
     };
 
+    /**
+     * @brief  message for velocity command of a robot
+     * @param header: header type
+     * @param target: name of robot
+     * @param left: left wheel velocity
+     * @param right: right wheel velocity
+     */
     struct VelocityCommand {
         Header header;
         std::string target;
@@ -42,6 +92,15 @@ namespace messages {
         {}
     };
 
+
+    /**
+     * @brief  message for perform odometry command of a robot
+     * @param header: header type
+     * @param name: name of robot
+     * @param x: x position of the robot
+     * @param y: y position of the robot
+     * @param theta: orientation of the robot
+     */
     struct Odometry {
         Header header;
         std::string name;
@@ -55,11 +114,17 @@ namespace messages {
         {}
     };
 
+    /**
+     * @brief  message for perform laser ray casting
+     * @param ranges: vector of dooubles
+     */
     struct LaserScan {
         std::vector<double> ranges;
     };
 
-
+    /**
+     * @brief  print Odometry message
+     */
     inline std::ostream& operator<<(std::ostream& os, const messages::Odometry& o) {
         return os << o.name 
                 << " x = " << o.x
@@ -67,20 +132,32 @@ namespace messages {
                 << " theta = " << o.theta;
     } 
 
+    /**
+     * @brief  print VelocityCommand message
+     */
     inline std::ostream& operator<<(std::ostream& os, const messages::VelocityCommand& v) {
         return os << v.target 
                 << " left=" << v.left 
                 << " right=" << v.right;
     }
 
+    /**
+     * @brief  print SimulationTick message
+     */
     inline std::ostream& operator<<(std::ostream& os, const messages::SimulationTick& t) {
         return os << "time=" << t.time;
     }
 
+    /**
+     * @brief  print Header message message
+     */
     inline std::ostream& operator<<(std::ostream& os, const messages::Header& h) {
         return os << "stamp=" << h.stamp_sim << " seq=" << h.seq;
     }
 
+    /**
+     * @brief  print LaserScan message
+     */
     inline std::ostream& operator<<(std::ostream& os, const messages::LaserScan& scan) {
         os << "ranges=[";
         for (auto r : scan.ranges) os << r << ",";
