@@ -1,3 +1,14 @@
+/**
+ * @file recorder.hpp
+ * @brief Declaration of variables and methods of class Recorder
+ *
+ * Description: record all information about subscription messages
+ * in a .log file.
+ * -------
+ * @author EnguessT
+ * @date June 29, 2026
+ */
+
 #pragma once
 
 #include <fstream>
@@ -8,6 +19,12 @@
 
 class Recorder {
 public:
+
+    /**
+     * @brief create a Recorder object
+     * @param[in] bus: a MessageBus object reference
+     * @param[in] path: the path to the record .log file 
+     */
     explicit Recorder(MessageBus& bus, const std::string& path)
         : m_out(path), m_running(true), m_worker(&Recorder::run, this)
     {
@@ -31,6 +48,9 @@ public:
             });
     }
 
+    /**
+     * @brief stop the recording and destroy a Recorder object
+     */
     ~Recorder() {
         {
             std::lock_guard<std::mutex> lock(m_mtx);
@@ -44,6 +64,11 @@ public:
     }
 
 private:
+
+    /**
+     * @brief Object to hold a message type in string form
+     * and string form of message to record
+     */    
     struct Item {
         std::string type;
         std::string text;
@@ -56,6 +81,14 @@ private:
     bool m_running = false;
     std::thread m_worker;
 
+    /**
+     * @brief place the message object to the recording queue
+     * 
+     * @tparam T the type of message
+     * @param[in] type: string title of the message type
+     * @param[in] msg: message object reference
+     * @return void
+     */
     template<typename T>
     void enqueue(const std::string& type, const T& msg) {
         std::ostringstream oss;
@@ -68,6 +101,12 @@ private:
         m_cv.notify_one();
     }
 
+    /**
+     * @brief start the recording 
+     * 
+     * @param[in] void
+     * @return void
+     */
     void run() {
         while (true) {
             Item item;
