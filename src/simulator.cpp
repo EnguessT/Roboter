@@ -1,10 +1,25 @@
+/**
+ * @file simulator.cpp
+ * @brief Definition of class Simulator.
+ *
+ * Description: Defines the methods of class Simulator.
+ * 
+ * proceed with the simulation of all created robots.
+ * -------
+ * @author EnguessT
+ * @date June 29, 2026
+ */
 #include <iostream>
 #include "../include/message.hpp"
-#include "../include/differential_drive.hpp"
+#include "../include/two_wheel_robot.hpp"
+#include "../include/four_wheel_robot.hpp"
 #include "../include/simulator.hpp"
 
 
 Simulator::Simulator() {
+    /* create and initialize subscription to messages used for 
+    simulation and spawn the robots created */
+
     m_bus.subscribe<messages::Pause>([this](const messages::Pause&) {
         m_running = false;
     });
@@ -24,9 +39,17 @@ Simulator::Simulator() {
 
     m_bus.subscribe<messages::SpawnRobot>([this](const messages::SpawnRobot& msg) {
         std::lock_guard<std::mutex> lock(m_mtx);
-        m_robots.push_back(std::make_unique<DifferentialDriveRobot>(
-            msg.name, msg.wheelBase, m_bus
+        if (msg.type == "Two wheel") {
+        m_robots.push_back(std::make_unique<TwoWheelRobot>(
+            msg.name, msg.position, msg.color, m_bus
         ));
+        }
+        else if(msg.type == "Four wheel") {
+            m_robots.push_back(std::make_unique<FourWheelRobot>(
+            msg.name, msg.position, msg.color, m_bus
+        ));
+
+        }
     });
 
     m_bus.subscribe<messages::Step>([this](const messages::Step& msg) { 
@@ -47,14 +70,7 @@ void Simulator::addRobot(std::unique_ptr<Robot> robot) { std::lock_guard<std::mu
     m_robots.push_back(std::move(robot));
 }
 
-/*void Simulator::update(double dt)
-{
-    for(auto& robot : m_robots) {
-        robot->update(dt);
-    }
-    
-}
-*/
+
 void Simulator::start(double dt) {
     m_lastDt = dt;
     if (m_running) return;
