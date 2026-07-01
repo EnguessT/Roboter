@@ -23,13 +23,13 @@ class FourWheelRobot : public DifferentialDriveRobot {
 public:
      /**
      * @brief Constructs a TwoWheelRobot object
-     * 
+     * @param[in] id the id of the robot
      * @param[in] name the name of the robot
      * @param[in] initPos: the initial position of the robot
      * @param[in] color: the color of the robot
      * @param[in] bus a reference to a message_bus object
      */
-    FourWheelRobot(std::string name, sf::Vector2f positions, 
+    FourWheelRobot(std::size_t id,std::string name, sf::Vector2f positions, 
         sf::Color color, MessageBus& bus);
     
 protected:
