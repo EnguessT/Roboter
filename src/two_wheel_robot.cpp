@@ -12,9 +12,10 @@
 #include "../include/two_wheel_robot.hpp"
 
 
-TwoWheelRobot::TwoWheelRobot(std::string name, sf::Vector2f positions, 
+TwoWheelRobot::TwoWheelRobot(std::size_t id, std::string name, 
+        sf::Vector2f positions, 
         sf::Color color, MessageBus& bus)
-    : DifferentialDriveRobot(name, positions, bus)
+    : DifferentialDriveRobot(id,name, positions, bus)
     , m_color(color) {
 
     // WheeelBase the distance between the left and right wheels
