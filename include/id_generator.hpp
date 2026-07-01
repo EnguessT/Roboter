@@ -6,8 +6,8 @@
  * @author EnguessT
  * @date June 30, 2026
  */
-
- #include <atomic>
+#pragma once 
+#include <atomic>
 
  class IDGenerator {
     static std::size_t next() {
