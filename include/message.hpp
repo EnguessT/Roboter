@@ -61,12 +61,14 @@ namespace messages {
     /**
      * @brief  message to spawn a robot
      * @param type: type of robot(two wheel, four wheel)
+     * @param id: id of robot
      * @param name: name of robot
      * @param position: initial posiotion of the robot
      * @param color: color of the robot
      */
     struct SpawnRobot {
         std::string type;
+        std::size_t id;
         std::string name;
         sf::Vector2f position;
         sf::Color color;
@@ -75,20 +77,20 @@ namespace messages {
     /**
      * @brief  message for velocity command of a robot
      * @param header: header type
-     * @param target: name of robot
+     * @param target: ID of robot
      * @param left: left wheel velocity
      * @param right: right wheel velocity
      */
     struct VelocityCommand {
         Header header;
-        std::string target;
+        std::size_t target;
         double left;
         double right;
 
         VelocityCommand()= default;
         
-        VelocityCommand(std::string t, double l, double r) 
-        : header{},target(std::move(t)), left(l), right(r) 
+        VelocityCommand(std::size_t t, double l, double r) 
+        : header{},target(t), left(l), right(r) 
         {}
     };
 
@@ -96,21 +98,21 @@ namespace messages {
     /**
      * @brief  message for perform odometry command of a robot
      * @param header: header type
-     * @param name: name of robot
+     * @param id: id of robot
      * @param x: x position of the robot
      * @param y: y position of the robot
      * @param theta: orientation of the robot
      */
     struct Odometry {
         Header header;
-        std::string name;
+        std::size_t id;
         double x{};
         double y{};
         double theta{};
 
         Odometry()= default;
-        Odometry(std::string t, double x_t, double y_t, double th_t) 
-        : header{}, name(std::move(t)), x(x_t), y(y_t), theta(th_t) 
+        Odometry(std::size_t t, double x_t, double y_t, double th_t) 
+        : header{}, id(t), x(x_t), y(y_t), theta(th_t) 
         {}
     };
 
@@ -126,7 +128,7 @@ namespace messages {
      * @brief  print Odometry message
      */
     inline std::ostream& operator<<(std::ostream& os, const messages::Odometry& o) {
-        return os << o.name 
+        return os << o.id 
                 << " x = " << o.x
                 << " y = " << o.y 
                 << " theta = " << o.theta;
