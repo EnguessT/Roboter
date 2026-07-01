@@ -78,19 +78,21 @@ namespace messages {
      * @brief  message for velocity command of a robot
      * @param header: header type
      * @param target: ID of robot
+     * @param name: name of robot
      * @param left: left wheel velocity
      * @param right: right wheel velocity
      */
     struct VelocityCommand {
         Header header;
         std::size_t target;
+        std::string name;
         double left;
         double right;
 
         VelocityCommand()= default;
         
-        VelocityCommand(std::size_t t, double l, double r) 
-        : header{},target(t), left(l), right(r) 
+        VelocityCommand(std::size_t t, std::string n, double l, double r) 
+        : header{},target(t), name(std::move(n)),left(l), right(r) 
         {}
     };
 
@@ -99,6 +101,7 @@ namespace messages {
      * @brief  message for perform odometry command of a robot
      * @param header: header type
      * @param id: id of robot
+     * @param name: name of robot
      * @param x: x position of the robot
      * @param y: y position of the robot
      * @param theta: orientation of the robot
@@ -106,13 +109,14 @@ namespace messages {
     struct Odometry {
         Header header;
         std::size_t id;
+        std::string name;
         double x{};
         double y{};
         double theta{};
 
         Odometry()= default;
-        Odometry(std::size_t t, double x_t, double y_t, double th_t) 
-        : header{}, id(t), x(x_t), y(y_t), theta(th_t) 
+        Odometry(std::size_t t, std::string n, double x_t, double y_t, double th_t) 
+        : header{}, id(t), name(std::move(n)),x(x_t), y(y_t), theta(th_t) 
         {}
     };
 
@@ -128,7 +132,8 @@ namespace messages {
      * @brief  print Odometry message
      */
     inline std::ostream& operator<<(std::ostream& os, const messages::Odometry& o) {
-        return os << o.id 
+        return os << "Robot" << o.id  
+                << "name " << o.name
                 << " x = " << o.x
                 << " y = " << o.y 
                 << " theta = " << o.theta;
@@ -138,7 +143,8 @@ namespace messages {
      * @brief  print VelocityCommand message
      */
     inline std::ostream& operator<<(std::ostream& os, const messages::VelocityCommand& v) {
-        return os << v.target 
+        return os << "Robot" << v.target 
+                << "name " << v.name
                 << " left=" << v.left 
                 << " right=" << v.right;
     }
