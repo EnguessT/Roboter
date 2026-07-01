@@ -228,12 +228,14 @@ void WindowUI::draw() {
     //FourWheelRobot fourRobot({200.f, 300.f}, sf::Color(35, 186, 153));
     //fourRobot.move({0.1f, 0.f});
 
-    m_canvas->draw(text);
-    m_canvas->draw(body);
+}
+
+void WindowUI::update() {
+    //m_canvas->draw(text);
+    //m_canvas->draw(body);
     //m_canvas->draw(robot);
     //m_canvas->draw(fourRobot);
     m_canvas->display();
-
 }
 
  tgui::EditBox::Ptr WindowUI::createEditBox(tgui::Theme& theme,float width, float height, 
@@ -295,6 +297,7 @@ void WindowUI::addCarcallback(tgui::Gui& gui, tgui::Theme& theme) {
     auto robotModel = createLabel(theme, "Model", 90, 58);
     robotWindow->add(robotModel);
 
+    // Robot model
     auto comboBox = tgui::ComboBox::create();
     comboBox->setRenderer(theme.getRenderer("ComboBox"));
     comboBox->setSize(160, 30);
@@ -304,6 +307,7 @@ void WindowUI::addCarcallback(tgui::Gui& gui, tgui::Theme& theme) {
     comboBox->setSelectedItem("Two Wheels");
     robotWindow->add(comboBox);
 
+    // X initial position
     auto xPos = createLabel(theme, "X", 140, 98);
     robotWindow->add(xPos);
 
@@ -313,12 +317,14 @@ void WindowUI::addCarcallback(tgui::Gui& gui, tgui::Theme& theme) {
     auto editXPosition = createEditBox(theme, 160, 40, 180, 88, "x position", maxXValue);
     robotWindow->add(editXPosition);
 
+    // Y initial position
     auto yPos = createLabel(theme, "Y", 140, 148);
     robotWindow->add(yPos);
 
     auto editYPosition = createEditBox(theme, 160, 40, 180, 138, "y position", maxYValue);
     robotWindow->add(editYPosition);
 
+    // Color for the robot
     auto color = createLabel(theme, "Color", 90, 188);
     robotWindow->add(color);
 
@@ -344,7 +350,7 @@ void WindowUI::addCarcallback(tgui::Gui& gui, tgui::Theme& theme) {
     robotWindow->add(rSlider, "R");
     robotWindow->add(gSlider, "G");
     robotWindow->add(bSlider, "B");
-
+    // Color preview for the robot
     auto colorPreview = tgui::Panel::create({60, 60});
     colorPreview->setPosition(300, 229);
     colorPreview->getRenderer()->setBackgroundColor(tgui::Color::White);
@@ -363,21 +369,20 @@ void WindowUI::addCarcallback(tgui::Gui& gui, tgui::Theme& theme) {
     rSlider->onValueChange(updatePreview);
     gSlider->onValueChange(updatePreview);
     bSlider->onValueChange(updatePreview);
-
+    // Get the Color for the robot
     auto okButton = tgui::Button::create("OK");
     okButton->setRenderer(theme.getRenderer("Button"));
     okButton->setPosition(305, 299);
     okButton->setSize(40, 30);
-    okButton->onPress([=] {
+    sf::Color selectedColor;
+    okButton->onPress([&] {
         tgui::Color selected(
             rSlider->getValue(),
             gSlider->getValue(),
             bSlider->getValue()
         );
-
-        
-
-        //robotWindow->close();
+        selectedColor = selected;        
+       
     });
     robotWindow->add(okButton);
 
@@ -386,6 +391,33 @@ void WindowUI::addCarcallback(tgui::Gui& gui, tgui::Theme& theme) {
     addButton->setRenderer(theme.getRenderer("Button"));
     addButton->setSize({"30%", "10%"});
     addButton->setPosition({"35%", "85%"});
+    // Add the robot to the sim Robot vector
+    addButton->onPress([&] {
+        if(comboBox->getSelectedItem().compare("Two wheels") == 0) {
+            m_sim.addRobot(std::make_unique<TwoWheelRobot>(
+                nameBox->getText().toStdString(), 
+                sf::Vector2f{
+                    editXPosition->getText().toFloat(),
+                    editYPosition->getText().toFloat()
+                },
+                selectedColor,
+                m_sim.bus()));
+        }
+        else if(comboBox->getSelectedItem().compare("Four wheels") == 0) {
+            m_sim.addRobot(std::make_unique<FourWheelRobot>(
+                nameBox->getText().toStdString(), 
+                sf::Vector2f{
+                    editXPosition->getText().toFloat(),
+                    editYPosition->getText().toFloat()
+                },
+                selectedColor,
+                m_sim.bus()));
+        }
+
+        // Close the robotWindow
+        robotWindow->close();
+    });
+
     robotWindow->add(addButton);
 
     gui.add(robotWindow);

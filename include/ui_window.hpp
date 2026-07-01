@@ -36,6 +36,7 @@ private:
     tgui::Theme m_theme;
     sf::Font m_font;
     tgui::CanvasSFML::Ptr m_canvas;
+    Simulator m_sim;
 };
 
 
