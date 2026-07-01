@@ -4,9 +4,10 @@
 #include "../include/differential_drive.hpp"
 
                         
-DifferentialDriveRobot:: DifferentialDriveRobot(std::string name,  
+DifferentialDriveRobot:: DifferentialDriveRobot(std::size_t id,
+    std::string name,  
     sf::Vector2f initPos, MessageBus& bus)
-    : Robot(std::move(name), bus) 
+    : Robot(id,std::move(name), bus) 
     , m_initPosition(initPos) {
 
     m_x = m_initPosition.x;
@@ -15,7 +16,7 @@ DifferentialDriveRobot:: DifferentialDriveRobot(std::string name,
 
     m_bus.subscribe<messages::VelocityCommand>(
         [this](const messages::VelocityCommand& cmd) {
-            if(cmd.target == m_name) {
+            if(cmd.target == m_id) {
                 m_leftVel = cmd.left;
                 m_rightVel = cmd.right;
             }
@@ -35,6 +36,7 @@ void DifferentialDriveRobot::update(double dt, double simTime) {
     messages::Odometry odom;
     odom.header.stamp_sim = simTime;
     odom.header.seq = m_odomSeq++;
+    odom.id = m_id;
     odom.name = m_name;
     odom.x = m_x;
     odom.y = m_y;
@@ -47,14 +49,16 @@ void DifferentialDriveRobot::update(double dt, double simTime) {
     velocity.header.seq = m_odomSeq++;
     velocity.left = m_leftVel;
     velocity.right = m_rightVel;
-    velocity.target = m_name;
+    velocity.target = m_id;
+    velocity.name = m_name;
     m_bus.publish(velocity);
 
 }
 
 void DifferentialDriveRobot::printStatus() const
 {
-    std::cout << m_name << " @ (" << m_x << " , " << m_y << "), θ = " << m_theta << '\n';
+    std::cout << "ID: " << m_id << " "
+        << m_name << " @ (" << m_x << " , " << m_y << "), θ = " << m_theta << '\n';
 }
 
 void DifferentialDriveRobot::reset() {

@@ -21,12 +21,13 @@ class DifferentialDriveRobot: public Robot {
 public:
     /**
      * @brief Constructs a DifferentialDriveRobot object
-     * 
+     * @param[in] id the id of the robot
      * @param[in] name the name of the robot
      * @param[in] initPos: the initial position of the robot
      * @param[in] bus a reference to a message_bus object
      */
-    DifferentialDriveRobot(std::string name, sf::Vector2f initPos, MessageBus& bus);
+    DifferentialDriveRobot(std::size_t id, std::string name, 
+                sf::Vector2f initPos, MessageBus& bus);
 
     /**
      * @brief Update the robot position during the simulation
