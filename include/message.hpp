@@ -54,7 +54,7 @@ namespace messages {
 
      /**
      * @brief message to step the simulation
-     * aparam dt: steptime
+     * @param dt: steptime
      */
     struct Step {double dt;};
 
