@@ -30,8 +30,9 @@ public:
      * @param[in] name the name of the robot
      * @param[in] bus a reference to a message_bus object
      */
-    explicit Robot(std::string name, MessageBus& bus)
-    : m_name(std::move(name)) 
+    explicit Robot(std::size_t id,std::string name, MessageBus& bus)
+    : m_id(id)
+    , m_name(std::move(name)) 
     , m_bus(bus)
     {}
 
@@ -57,7 +58,15 @@ public:
      */
     virtual void reset() {}
 
-    const std::string name() const {return m_name;};
+    /**
+     * @brief get the name of a robot
+     */
+    const std::string& name() const {return m_name;};
+
+    /**
+     * @brief get the ID of a robot
+     */
+    std::size_t id() const { return m_id;}
 
     /**
      * @brief create a RoundedRectangle graphic component
@@ -78,7 +87,8 @@ protected:
      * @brief draw graphic components on the sfml canvas
      */
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override = 0;
-
+    
+    std::size_t m_id;
     std::string m_name{};
     MessageBus& m_bus;
 };
