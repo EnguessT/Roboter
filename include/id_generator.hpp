@@ -10,7 +10,8 @@
 #pragma once 
 #include <atomic>
 
- class IDGenerator {
+class IDGenerator {
+public:
     static std::size_t next() {
         static std::atomic<std::size_t> counter{0};
         return counter++;
