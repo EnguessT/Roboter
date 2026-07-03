@@ -223,18 +223,21 @@ void WindowUI::draw() {
     body.setPosition({300.f, 100.f});
     //body.setRotation(sf::Angle .f);
 
-    //TwoWheelRobot robot({80.f, 200.f}, sf::Color(35, 186, 153));
-    //robot.move({0.1f, 0.f});
-    //FourWheelRobot fourRobot({200.f, 300.f}, sf::Color(35, 186, 153));
-    //fourRobot.move({0.1f, 0.f});
+    for (auto& robot : m_sim.robots()) {
+        m_canvas->draw(*robot);
+    }
+
+    m_canvas->display();
 
 }
 
 void WindowUI::update() {
     //m_canvas->draw(text);
     //m_canvas->draw(body);
-    //m_canvas->draw(robot);
-    //m_canvas->draw(fourRobot);
+    for (auto& robot : m_sim.robots()) {
+        m_canvas->draw(*robot);
+    }
+
     m_canvas->display();
 }
 
@@ -302,9 +305,9 @@ void WindowUI::addCarcallback(tgui::Gui& gui, tgui::Theme& theme) {
     comboBox->setRenderer(theme.getRenderer("ComboBox"));
     comboBox->setSize(160, 30);
     comboBox->setPosition(180, 53);
-    comboBox->addItem("Two wheels");
-    comboBox->addItem("Four Wheels");
-    comboBox->setSelectedItem("Two Wheels");
+    comboBox->addItem("Two wheel");
+    comboBox->addItem("Four wheel");
+    comboBox->setSelectedItem("Two Wheel");
     robotWindow->add(comboBox);
 
     // X initial position
@@ -369,21 +372,21 @@ void WindowUI::addCarcallback(tgui::Gui& gui, tgui::Theme& theme) {
     rSlider->onValueChange(updatePreview);
     gSlider->onValueChange(updatePreview);
     bSlider->onValueChange(updatePreview);
+
     // Get the Color for the robot
     auto okButton = tgui::Button::create("OK");
     okButton->setRenderer(theme.getRenderer("Button"));
     okButton->setPosition(305, 299);
     okButton->setSize(40, 30);
-    sf::Color selectedColor;
-    okButton->onPress([&] {
-        tgui::Color selected(
+ 
+    okButton->onPress([this,rSlider, gSlider, bSlider] {
+        this->selectedColor = sf::Color(
             rSlider->getValue(),
             gSlider->getValue(),
             bSlider->getValue()
         );
-        selectedColor = selected;        
-       
     });
+
     robotWindow->add(okButton);
 
     // Create the login button
@@ -391,28 +394,21 @@ void WindowUI::addCarcallback(tgui::Gui& gui, tgui::Theme& theme) {
     addButton->setRenderer(theme.getRenderer("Button"));
     addButton->setSize({"30%", "10%"});
     addButton->setPosition({"35%", "85%"});
+
     // Add the robot to the sim Robot vector
-    addButton->onPress([&] {
-        if(comboBox->getSelectedItem().compare("Two wheels") == 0) {
-            m_sim.addRobot(std::make_unique<TwoWheelRobot>(
-                nameBox->getText().toStdString(), 
-                sf::Vector2f{
+    addButton->onPress([this, comboBox, nameBox, editXPosition, 
+                editYPosition, robotWindow] {
+        /*When clicked on Add button, we publish to a SpawnRbot message in
+        order to add the created Robots to the vector of Robots */
+        messages::SpawnRobot msg;
+        msg.type = comboBox->getSelectedItem().toStdString();
+        msg.name = nameBox->getText().toStdString();
+        msg.position = sf::Vector2f{
                     editXPosition->getText().toFloat(),
                     editYPosition->getText().toFloat()
-                },
-                selectedColor,
-                m_sim.bus()));
-        }
-        else if(comboBox->getSelectedItem().compare("Four wheels") == 0) {
-            m_sim.addRobot(std::make_unique<FourWheelRobot>(
-                nameBox->getText().toStdString(), 
-                sf::Vector2f{
-                    editXPosition->getText().toFloat(),
-                    editYPosition->getText().toFloat()
-                },
-                selectedColor,
-                m_sim.bus()));
-        }
+                };
+        msg.color = this->selectedColor;
+        m_sim.bus().publish(msg);
 
         // Close the robotWindow
         robotWindow->close();
