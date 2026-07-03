@@ -40,7 +40,7 @@ public:
      * @brief add a created Robot object to the vector of Robots
      * displayed on the SFML canvas
      * @param[in] robot: an unique_ptr of Robot object
-     * @param[out] void
+     * @return void
      */
     void addRobot(std::unique_ptr<Robot> robot);
     //void update(double dt);
@@ -48,21 +48,21 @@ public:
     /**
      * @brief print all created Robot objects added to the Canvas
      * @param[in] void
-     * @param[out] void
+     * @return void
      */
     void printAll() const;
 
     /**
      * @brief start the simulation's run
      * @param[in] dt: the simulation time
-     * @param[out] void
+     * @return void
      */
     void start(double dt);
 
     /**
      * @brief stop the simulation's run
      * @param[in] void
-     * @param[out] void
+     * @return void
      */
     void stop();
 
@@ -76,22 +76,33 @@ public:
     /**
      * @brief take in a velocity commands for 
      * forward kinematic
-     * @param[in] target: name of the robot
+     * @param[in] id: id of the robot
+     * @param[in] name: name of the robot
      * @param[in] left, right: speed of left and riight wheel
-     * @param[in] simTime: the simulation time  
+     * @param[in] simTime: the simulation time 
+     * @return messages::VelocityCommand 
      */
-    messages::VelocityCommand makeVelocityCommand(const std::string& target, 
+    messages::VelocityCommand makeVelocityCommand(std::size_t id, 
+                const std::string& name, 
                 double left, double right, double simTime);
 
     /**
-     * @brief create a bus object
+     * @brief return a bus object
      * @param[in] void
-     * @param[out] MessageBus& MessageBus object reference
+     * @return MessageBus& MessageBus object reference
      */
     MessageBus& bus();
 
+    /**
+     * @brief return the vector of created robots
+     * @param[in] void
+     * @return std::vector<std::unique_ptr<Robot>> 
+     */
+    const std::vector<std::unique_ptr<Robot>>& robots() const;
+
 private:
     std::vector<std::unique_ptr<Robot>> m_robots;  //vector of robots created
+
     /**
      * @brief proceed the threaded loop of all robot created
      * @param[in] dt: time step

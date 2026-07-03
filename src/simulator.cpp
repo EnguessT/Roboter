@@ -9,10 +9,10 @@
  * @author EnguessT
  * @date June 29, 2026
  */
+
 #include <iostream>
 #include "../include/message.hpp"
-#include "../include/two_wheel_robot.hpp"
-#include "../include/four_wheel_robot.hpp"
+#include "../include/robot_factory.hpp"
 #include "../include/simulator.hpp"
 
 
@@ -39,17 +39,10 @@ Simulator::Simulator() {
 
     m_bus.subscribe<messages::SpawnRobot>([this](const messages::SpawnRobot& msg) {
         std::lock_guard<std::mutex> lock(m_mtx);
-        if (msg.type == "Two wheel") {
-        m_robots.push_back(std::make_unique<TwoWheelRobot>(
-            msg.name, msg.position, msg.color, m_bus
-        ));
-        }
-        else if(msg.type == "Four wheel") {
-            m_robots.push_back(std::make_unique<FourWheelRobot>(
-            msg.name, msg.position, msg.color, m_bus
-        ));
-
-        }
+        
+        auto robot = RobotFactory::create(msg, m_bus);
+        m_robots.push_back(std::move(robot));
+    
     });
 
     m_bus.subscribe<messages::Step>([this](const messages::Step& msg) { 
@@ -140,12 +133,13 @@ messages::Header Simulator::makeHeader(double simTime) {
     return h;
 }
 
-messages::VelocityCommand Simulator::makeVelocityCommand(
-    const std::string& target, double left, double right, double simTime) {
+messages::VelocityCommand Simulator::makeVelocityCommand( std::size_t id,
+    const std::string& name, double left, double right, double simTime) {
     messages::VelocityCommand v;
     v.header.stamp_sim = simTime;
     v.header.seq = m_cmdSeq++;
-    v.target = target;
+    v.target = id;
+    v.name = name;
     v.left = left;
     v.right = right;
     return v;
@@ -162,3 +156,7 @@ void Simulator::printAll() const {
 MessageBus& Simulator::bus() { 
     return m_bus;
 }
+
+const std::vector<std::unique_ptr<Robot>>& Simulator::robots() const {
+    return m_robots;
+ }
