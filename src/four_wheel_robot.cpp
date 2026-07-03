@@ -26,9 +26,9 @@ FourWheelRobot::FourWheelRobot(std::size_t id, std::string name,
     setPosition(m_initPosition);
 
     // ---  Main body  ---
-    auto body = createRoundedComponent({m_length, m_width}, 15.f, {m_length, m_width},m_color);
-    body->setFillColor(sf::Color(128, 128, 128));
-    myShapes.push_back(std::move(body));
+    m_body = createRoundedComponent({m_length, m_width}, 15.f, {m_length, m_width},m_color);
+    m_body->setFillColor(sf::Color(128, 128, 128));
+    myShapes.push_back(std::move(m_body));
 
     // ---  Colored part ---
     auto coloredPart = createRoundedComponent({m_length -12.f, m_width - 12.f}, 

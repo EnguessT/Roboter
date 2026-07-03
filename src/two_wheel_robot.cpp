@@ -35,9 +35,9 @@ TwoWheelRobot::TwoWheelRobot(std::size_t id, std::string name,
     }
 
     // ---  Main Body  ---
-    auto  body = createCircleComponent(m_radius, {m_radius, m_radius}, 
+    m_body = createCircleComponent(m_radius, {m_radius, m_radius}, 
                         sf::Color(128, 128, 128));
-    myShapes.push_back(std::move(body));
+    myShapes.push_back(std::move(m_body));
 
     // ---  Colored Circle ---
     auto coloredCircle = createCircleComponent(40.f, {40.f, 40.f}, m_color);

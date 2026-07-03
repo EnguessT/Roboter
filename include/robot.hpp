@@ -82,6 +82,24 @@ public:
                                 sf::Vector2f origin, sf::Color color) = 0;
 
     
+    /**
+     * @brief returns the bounding box of the robot 
+     * @param[in] void
+     * @return sf::FloatRect corresponding boundingbox
+     */
+    sf::FloatRect getGlobalBounds() const {
+        return getTransform().transformRect(m_body->getLocalBounds());
+    }
+
+    /**
+     * @brief check if a point is inside the boundingbox
+     * @param[in] point 
+     * @return bool: if point is contained inside the boundingbox or not
+     */
+    bool contains(sf::Vector2f point) const {
+        return getGlobalBounds().contains(point);
+    }
+    
 protected:
     /**
      * @brief draw graphic components on the sfml canvas
@@ -91,4 +109,5 @@ protected:
     std::size_t m_id;
     std::string m_name{};
     MessageBus& m_bus;
+    std::unique_ptr<sf::Shape> m_body;   // Main body of the robot
 };
